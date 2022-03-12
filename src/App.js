@@ -1,28 +1,20 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { MDBContainer } from 'mdb-react-ui-kit';
 import Header from './Components/Header/Header';
 import Footer from './Components/Footer/Footer';
-import Login from './Components/Login/Login';
-import Register from './Components/Register/Register';
-import UserPage from './Components/Account/UserPage';
-import AdminPage from './Components/Admin/AdminPage';
+import Body from './Components/Body/Body';
 
-const App = () => {
-  return (
-    <BrowserRouter >
-        <MDBContainer fluid>
-            <Header />
-            <Routes>
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/adminpage' element={<AdminPage />} />
-            <Route path='/userpage' element={<UserPage />} />
-            </Routes>
-            <Footer />
-        </MDBContainer>
-    </BrowserRouter>
-  );
-}
+const App = (props) => {
+    return (
+        <BrowserRouter >
+            <MDBContainer fluid>
+                <Header />
+                <Body />
+                <Footer />
+            </MDBContainer>
+        </BrowserRouter>
+    );
+};
 
 export default App;
