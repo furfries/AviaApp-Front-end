@@ -1,18 +1,19 @@
 import { connect } from 'react-redux';
-import { login } from '../../../redux/login-reducer';
+import { login, updatePassword, updateLogin } from '../../../redux/auth-reducer';
 import Login from './Login'
 
 const mapStateToProps = (state) => {
     return {
-        isLoginPending: state.loginPage.isLoginPending,
-        isLoginSuccess: state.loginPage.isLoginSuccess,
-        loginError: state.loginPage.loginError
+        loginText: state.authReducer.loginText,
+        passText: state.authReducer.passText,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        login: (email, password) => dispatch(login(email, password))
+        login: (email, password) => dispatch(login(email, password)),
+        updateLogin: (login) => dispatch(updateLogin(login)),
+        updatePassword: (password) => dispatch(updatePassword(password)),
     };
 }
 
