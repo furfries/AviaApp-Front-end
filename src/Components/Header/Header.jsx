@@ -26,25 +26,23 @@ const Header = () => {
         navigate('/login', { replace: true });
     };
     function redirect() {
-        const adminToken = '123456789admin';
-        if (sessionStorage.getItem('auth-token') == adminToken) {
+        if (JSON.parse(sessionStorage.getItem('avia-app-user')).email === 'admin@xx.xx') {
             return navigate('/adminpage', { replace: true })
         } else {
             return navigate('/userpage', { replace: true })
         }
     }
-
     return (
         <MDBNavbar expand='lg' light bgColor='light'>
             <MDBContainer fluid>
-                <MDBNavbarBrand href='#'>
+                <NavLink to={'/main'}> <MDBNavbarBrand>
                     <img
                         src='./logo-transparent4.png'
                         height='30'
                         alt=''
                         loading='lazy'
                     />
-                </MDBNavbarBrand>
+                </MDBNavbarBrand> </NavLink>
                 <MDBNavbarToggler
                     aria-controls='navbarSupportedContent'
                     aria-expanded='false'
@@ -57,17 +55,17 @@ const Header = () => {
                     <MDBNavbarNav className='mr-auto mb-2 mb-lg-0'>
                         <MDBNavbarItem>
                             <MDBNavbarLink active aria-current='page' href='#'>
-                                Home
+                                Tickets
                             </MDBNavbarLink>
                         </MDBNavbarItem>
                         <MDBNavbarItem>
-                            <MDBNavbarLink href='#'>Link</MDBNavbarLink>
+                            <MDBNavbarLink href='#'>Services</MDBNavbarLink>
                         </MDBNavbarItem>
 
                         <MDBNavbarItem>
                             <MDBDropdown>
                                 <MDBDropdownToggle tag='a' className='nav-link'>
-                                    Dropdown
+                                    Information
                                 </MDBDropdownToggle>
                                 <MDBDropdownMenu>
                                     <MDBDropdownItem>
@@ -85,9 +83,9 @@ const Header = () => {
                         <MDBNavbarItem>
                         </MDBNavbarItem>
                     </MDBNavbarNav>
-                    {sessionStorage.getItem('auth-token') ? (
+                    {sessionStorage.getItem('avia-app-user') ? (
                         <MDBDropdown>
-                            <MDBDropdownToggle>{sessionStorage.getItem('email')}</MDBDropdownToggle>
+                            <MDBDropdownToggle>{JSON.parse(sessionStorage.getItem('avia-app-user')).email}</MDBDropdownToggle>
                             <MDBDropdownMenu>
                                 <MDBDropdownItem>
                                     <MDBDropdownLink onClick={redirect}>Account</MDBDropdownLink>

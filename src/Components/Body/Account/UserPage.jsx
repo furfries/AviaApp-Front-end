@@ -1,17 +1,12 @@
 import React from 'react';
 import { Navigate } from "react-router-dom";
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBRow, MDBCol, MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 
 const UserPage = () => {
-    if (!sessionStorage.getItem('auth-token')) {
-        return <Navigate to={'/login'} replace={true} />
-    } else {
-        const authToken = '123456789user';
-        if (sessionStorage.getItem('auth-token') == authToken) {
+    if (JSON.parse(sessionStorage.getItem('avia-app-user'))) {
 
-        } else {
-            return <Navigate to={'/login'} replace={true} />
-        }
+    } else {
+        return <Navigate to={'/login'} replace={true} />
     }
     return (
         <MDBRow className='mt-3'>

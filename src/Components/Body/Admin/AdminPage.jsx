@@ -3,15 +3,10 @@ import { Navigate } from "react-router-dom";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 
 const AdminPage = () => {
-    if (!sessionStorage.getItem('auth-token')) {
+    if (JSON.parse(sessionStorage.getItem('avia-app-user')).email !==  'admin@xx.xx') {
         return <Navigate to={'/login'} replace={true} />
     } else {
-        const authToken = '123456789admin';
-        if (sessionStorage.getItem('auth-token') == authToken) {
 
-        } else {
-            return <Navigate to={'/login'} replace={true} />
-        }
     }
     return (
         <MDBRow className='mt-3'>

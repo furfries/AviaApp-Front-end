@@ -1,18 +1,19 @@
 import { connect } from 'react-redux';
-import { login, updatePassword, updateLogin } from '../../../redux/auth-reducer';
+import { login, updatePassword, updateEmail } from '../../../redux/auth-reducer';
 import Login from './Login'
 
 const mapStateToProps = (state) => {
     return {
-        loginText: state.authReducer.loginText,
+        emailText: state.authReducer.emailText,
         passText: state.authReducer.passText,
+        errors: state.authReducer.errors
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         login: (email, password) => dispatch(login(email, password)),
-        updateLogin: (login) => dispatch(updateLogin(login)),
+        updateEmail: (email) => dispatch(updateEmail(email)),
         updatePassword: (password) => dispatch(updatePassword(password)),
     };
 }
