@@ -1,14 +1,13 @@
 import React from 'react';
 import { MDBFooter } from 'mdb-react-ui-kit';
 
-export default function Footer() {
+const Footer = () => {
   return (
     <MDBFooter bgColor='light' className='text-center text-lg-start text-muted mt-5 d-flex justify-content-center flex-column'>
       <section className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom'>
         <div className='me-5 d-none d-lg-block'>
           <span>Get connected with us on social networks:</span>
         </div>
-
         <div>
           <a href='' className='me-4 text-reset'>
             <i className='fab fa-facebook-f'></i>
@@ -31,7 +30,7 @@ export default function Footer() {
         </div>
       </section>
 
-      <section className=''>
+      <section>
         <div className='container text-center text-md-start mt-5'>
           <div className='row mt-3'>
             <div className='col-md-3 col-lg-4 col-xl-3 mx-auto mb-4'>
@@ -108,4 +107,7 @@ export default function Footer() {
       </div>
     </MDBFooter>
   );
-}
+};
+
+
+export default Footer;
