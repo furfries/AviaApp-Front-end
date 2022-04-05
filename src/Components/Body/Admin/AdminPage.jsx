@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 
 const AdminPage = () => {
-    if (JSON.parse(sessionStorage.getItem('avia-app-user')).email !==  'admin@xx.xx') {
+    if (sessionStorage.getItem('email') !==  'admin@xx.xx') {
         return <Navigate to={'/login'} replace={true} />
     } else {
 

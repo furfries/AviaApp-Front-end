@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 
 const UserPage = () => {
-    if (JSON.parse(sessionStorage.getItem('avia-app-user'))) {
+    if (sessionStorage.getItem('avia-app-user')) {
 
     } else {
         return <Navigate to={'/login'} replace={true} />

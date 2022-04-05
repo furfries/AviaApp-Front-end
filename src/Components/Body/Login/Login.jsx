@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
     MDBInput,
@@ -7,6 +7,11 @@ import {
 
 const Login = (props) => {
     const navigate = useNavigate();
+    useEffect(() => {
+        if (sessionStorage.getItem('avia-app-user')) {
+            return navigate('/main', { replace: true })
+         }
+    })
     const onEmailChange = (e) => {
         props.updateEmail(e.target.value)
     }
@@ -14,12 +19,12 @@ const Login = (props) => {
         props.updatePassword(e.target.value)
     }
     const submitForm = () => {
-        props.login(props.emailText, props.passText)
-        if (sessionStorage.getItem('avia-app-user')) {
-            return navigate('/main', { replace: true })
-        }
+        props.loginThunk(props.emailText, props.passText);
+ 
 
     }
+
+
     return (
         <div className='d-flex justify-content-center mt-5'>
             <div className='flex-column'>
@@ -41,6 +46,7 @@ const Login = (props) => {
                 </MDBBtn>
                 <div className='text-center text-danger mt-3'>
                     {props.errors}
+                  
                 </div>
                 <div className='text-center mt-4'>
                     <p>

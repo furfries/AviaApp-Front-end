@@ -25,8 +25,9 @@ const Header = () => {
         sessionStorage.clear();
         navigate('/login', { replace: true });
     };
+
     function redirect() {
-        if (JSON.parse(sessionStorage.getItem('avia-app-user')).email === 'admin@xx.xx') {
+        if (sessionStorage.getItem('email') === 'admin@xx.xx') {
             return navigate('/adminpage', { replace: true })
         } else {
             return navigate('/userpage', { replace: true })
@@ -85,18 +86,18 @@ const Header = () => {
                     </MDBNavbarNav>
                     {sessionStorage.getItem('avia-app-user') ? (
                         <MDBDropdown>
-                            <MDBDropdownToggle>{JSON.parse(sessionStorage.getItem('avia-app-user')).email}</MDBDropdownToggle>
+                            <MDBDropdownToggle>{sessionStorage.getItem('email')}</MDBDropdownToggle>
                             <MDBDropdownMenu>
                                 <MDBDropdownItem>
                                     <MDBDropdownLink onClick={redirect}>Account</MDBDropdownLink>
                                 </MDBDropdownItem>
                                 <MDBDropdownItem>
-                                    <MDBDropdownLink onClick={logOut}>Logout</MDBDropdownLink>
+                                    <MDBDropdownLink onClick={logOut} >Logout</MDBDropdownLink>
                                 </MDBDropdownItem>
                             </MDBDropdownMenu>
                         </MDBDropdown>) : (
-                        <NavLink to='/login'><MDBBtn onClick={logOut}>LOGIN</MDBBtn></NavLink>)
-                    }
+                        <NavLink to='/login'><MDBBtn >LOGIN</MDBBtn></NavLink>)
+                    }     
                 </MDBCollapse>
             </MDBContainer>
         </MDBNavbar>

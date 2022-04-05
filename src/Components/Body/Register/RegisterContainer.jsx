@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { updatePassword, updateEmail, register, updateConfirmPassword } from '../../../redux/auth-reducer';
+import { updatePassword, updateEmail, registerThunk, updateConfirmPassword } from '../../../redux/auth-reducer';
 import Register from './Register'
 
 const mapStateToProps = (state) => {
@@ -7,17 +7,18 @@ const mapStateToProps = (state) => {
         emailText: state.authReducer.emailText,
         passText: state.authReducer.passText,
         confirmPassText: state.authReducer.confirmPassText,
-        errors: state.authReducer.errors
+        errors: state.authReducer.errors,
+        isRegistered: state.authReducer.isRegistered
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        register: (email, password, confirmPassword) => dispatch(register(email, password, confirmPassword)),
+        registerThunk: (email, password, ) => dispatch(registerThunk(email, password,)),
         updateEmail: (email) => dispatch(updateEmail(email)),
         updatePassword: (password) => dispatch(updatePassword(password)),
         updateConfirmPassword: (confirmPassword) => dispatch(updateConfirmPassword(confirmPassword)),
-        
+
     };
 }
 
