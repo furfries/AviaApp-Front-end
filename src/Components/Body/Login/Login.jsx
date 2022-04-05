@@ -1,8 +1,9 @@
-import {React, useEffect} from 'react';
+import { React, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
     MDBInput,
     MDBBtn,
+    MDBSpinner
 } from 'mdb-react-ui-kit';
 
 const Login = (props) => {
@@ -10,7 +11,7 @@ const Login = (props) => {
     useEffect(() => {
         if (sessionStorage.getItem('avia-app-user')) {
             return navigate('/main', { replace: true })
-         }
+        }
     })
     const onEmailChange = (e) => {
         props.updateEmail(e.target.value)
@@ -20,11 +21,8 @@ const Login = (props) => {
     }
     const submitForm = () => {
         props.loginThunk(props.emailText, props.passText);
- 
-
+        console.log(props.isFetching)
     }
-
-
     return (
         <div className='d-flex justify-content-center mt-5'>
             <div className='flex-column'>
@@ -41,13 +39,15 @@ const Login = (props) => {
                     onChange={onPasswordChange}
                     value={props.passText}
                 />
-                <MDBBtn type='submit' block className='mt-2' onClick={submitForm}>
+                <MDBBtn type='submit' block className='mt-2' onClick={submitForm} disabled={props.isFetching}>
                     Sign in
                 </MDBBtn>
                 <div className='text-center text-danger mt-3'>
-                    {props.errors}
-                  
+                    {props.isFetching ? <MDBSpinner color='primary'>
+                        <span className='visually-hidden'>Loading...</span>
+                    </MDBSpinner> : props.errors}
                 </div>
+
                 <div className='text-center mt-4'>
                     <p>
                         Not a member? <NavLink to='/register'>Register</NavLink>

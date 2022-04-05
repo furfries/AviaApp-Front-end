@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
     MDBInput,
     MDBBtn,
+    MDBSpinner
 } from 'mdb-react-ui-kit';
 
 const Register = (props) => {
@@ -22,7 +23,7 @@ const Register = (props) => {
         props.updateConfirmPassword(e.target.value)
     }
     const submitForm = () => {
-        props.registerThunk(props.emailText, props.passText)
+        props.registerThunk(props.emailText, props.passText, props.confirmPassText)
     }
 
     return (
@@ -49,11 +50,13 @@ const Register = (props) => {
                     onChange={onConfirmPasswordChange}
                     value={props.confirmPassText}
                 />
-                <MDBBtn type='submit' className='mt-2' block onClick={submitForm}>
+                <MDBBtn type='submit' className='mt-2' block onClick={submitForm} disabled={props.isFetching}>
                     Register
                 </MDBBtn>
                 <div className='text-center text-danger mt-3'>
-                    {props.errors} 
+                    {props.isFetching ? <MDBSpinner color='primary'>
+                        <span className='visually-hidden'>Loading...</span>
+                    </MDBSpinner> : props.errors}
                 </div>
                 <div className='text-center mt-4'>
                     <p>

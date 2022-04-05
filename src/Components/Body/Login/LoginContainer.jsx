@@ -9,7 +9,8 @@ const mapStateToProps = (state) => {
         passText: state.authReducer.passText,
         errors: state.authReducer.errors,
         roles: state.authReducer.roles,
-        isAuth: state.authReducer.isAuth
+        isAuth: state.authReducer.isAuth,
+        isFetching: state.authReducer.isFetching,
     };
 }
 

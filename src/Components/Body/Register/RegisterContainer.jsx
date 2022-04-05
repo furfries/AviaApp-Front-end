@@ -8,13 +8,14 @@ const mapStateToProps = (state) => {
         passText: state.authReducer.passText,
         confirmPassText: state.authReducer.confirmPassText,
         errors: state.authReducer.errors,
-        isRegistered: state.authReducer.isRegistered
+        isRegistered: state.authReducer.isRegistered,
+        isFetching: state.authReducer.isFetching,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        registerThunk: (email, password, ) => dispatch(registerThunk(email, password,)),
+        registerThunk: (email, password, confirmPassword) => dispatch(registerThunk(email, password, confirmPassword)),
         updateEmail: (email) => dispatch(updateEmail(email)),
         updatePassword: (password) => dispatch(updatePassword(password)),
         updateConfirmPassword: (confirmPassword) => dispatch(updateConfirmPassword(confirmPassword)),
