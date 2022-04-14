@@ -1,12 +1,18 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
     MDBInput,
     MDBBtn,
+    MDBSpinner
 } from 'mdb-react-ui-kit';
 
 const Register = (props) => {
     const navigate = useNavigate();
+    useEffect(() => {
+        if (props.isAuth) {
+            return navigate('/', { replace: true })
+        }
+    })
     const onEmailChange = (e) => {
         props.updateEmail(e.target.value)
     }
@@ -17,11 +23,9 @@ const Register = (props) => {
         props.updateConfirmPassword(e.target.value)
     }
     const submitForm = () => {
-        props.register(props.emailText, props.passText, props.confirmPassText)
-        if (sessionStorage.getItem('avia-app-user')) {
-            return navigate('/main', { replace: true })
-        }
+        props.registerThunk(props.emailText, props.passText, props.confirmPassText)
     }
+
     return (
         <div className='d-flex justify-content-center mt-5'>
             <div className='flex-column'>
@@ -46,11 +50,13 @@ const Register = (props) => {
                     onChange={onConfirmPasswordChange}
                     value={props.confirmPassText}
                 />
-                <MDBBtn type='submit' className='mt-2' block onClick={submitForm}>
+                <MDBBtn type='submit' className='mt-2' block onClick={submitForm} disabled={props.isFetching}>
                     Register
                 </MDBBtn>
                 <div className='text-center text-danger mt-3'>
-                    {props.errors}
+                    {props.isFetching ? <MDBSpinner color='primary'>
+                        <span className='visually-hidden'>Loading...</span>
+                    </MDBSpinner> : <span>{props.errors.map(e => (<p>{e}</p>))}</span>}
                 </div>
                 <div className='text-center mt-4'>
                     <p>

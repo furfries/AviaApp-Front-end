@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import UserPage from './Account/UserPage';
-import AdminPage from './Admin/AdminPage';
+import UserpageContainer from './Account/UserpageContainer';
+import AdminpageContainer from './Admin/AdminpageContainer';
 import LoginContainer from './Login/LoginContainer';
 import MainPage from './MainPage/MainPage';
 import RegisterContainer from './Register/RegisterContainer';
@@ -12,9 +12,9 @@ const Body = (props) => {
         <Routes>
             <Route path='/login' element={<LoginContainer />} />
             <Route path='/register' element={<RegisterContainer />} />
-            <Route path='/adminpage' element={<AdminPage />} />
-            <Route path='/userpage' element={<UserPage />} />
-            <Route path='/main' element={<MainPage />} />
+            <Route path='/adminpage' element={<AdminpageContainer />} />
+            <Route path='/userpage' element={<UserpageContainer />} />
+            <Route path='/' element={<MainPage />} />
         </Routes>
 
     );

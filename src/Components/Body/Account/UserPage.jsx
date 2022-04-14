@@ -1,19 +1,13 @@
 import React from 'react';
-import { Navigate } from "react-router-dom";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 
-const UserPage = () => {
-    if (JSON.parse(sessionStorage.getItem('avia-app-user'))) {
-
-    } else {
-        return <Navigate to={'/login'} replace={true} />
-    }
+const UserPage = (props) => {
     return (
         <MDBRow className='mt-3'>
             <MDBCol sm='12'>
                 <MDBCard>
                     <MDBCardBody>
-                        <MDBCardTitle className='text-center'> <MDBIcon className='me-2' fas icon="user-alt" /> USER </MDBCardTitle>
+                        <MDBCardTitle className='text-center'> <MDBIcon className='me-2' fas icon="user-alt" /> {props.user.email.toUpperCase()} </MDBCardTitle>
                     </MDBCardBody>
                 </MDBCard>
             </MDBCol>
