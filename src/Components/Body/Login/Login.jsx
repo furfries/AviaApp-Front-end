@@ -9,8 +9,8 @@ import {
 const Login = (props) => {
     const navigate = useNavigate();
     useEffect(() => {
-        if (sessionStorage.getItem('avia-app-user')) {
-            return navigate('/main', { replace: true })
+        if (props.isAuth) {
+            return navigate('/', { replace: true })
         }
     })
     const onEmailChange = (e) => {
@@ -21,7 +21,6 @@ const Login = (props) => {
     }
     const submitForm = () => {
         props.loginThunk(props.emailText, props.passText);
-        console.log(props.isFetching)
     }
     return (
         <div className='d-flex justify-content-center mt-5'>
@@ -45,7 +44,7 @@ const Login = (props) => {
                 <div className='text-center text-danger mt-3'>
                     {props.isFetching ? <MDBSpinner color='primary'>
                         <span className='visually-hidden'>Loading...</span>
-                    </MDBSpinner> : props.errors}
+                    </MDBSpinner> : <span>{props.errors.map(e => (<p key={e}>{e}</p>))}</span>}
                 </div>
 
                 <div className='text-center mt-4'>

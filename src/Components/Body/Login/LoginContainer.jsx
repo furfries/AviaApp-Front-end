@@ -1,7 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { loginThunk, updatePassword, updateEmail} from '../../../redux/auth-reducer';
+import { loginThunk, updatePassword, updateEmail, clearForm } from '../../../redux/auth-reducer';
 import Login from './Login'
+
+class LoginContainer extends React.Component {
+    componentDidMount() {
+        this.props.clearForm();
+    }
+    render() {
+        return <Login {...this.props} />
+    }
+}
 
 const mapStateToProps = (state) => {
     return {
@@ -19,8 +28,9 @@ const mapDispatchToProps = (dispatch) => {
         updateEmail: (email) => dispatch(updateEmail(email)),
         updatePassword: (password) => dispatch(updatePassword(password)),
         loginThunk: (email, password) => dispatch(loginThunk(email, password)),
+        clearForm: () => dispatch(clearForm()),
     };
 }
 
-const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(Login);
-export default LoginContainer
+export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);
+

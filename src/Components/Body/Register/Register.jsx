@@ -9,8 +9,8 @@ import {
 const Register = (props) => {
     const navigate = useNavigate();
     useEffect(() => {
-        if (props.isRegistered) {
-            return navigate('/login', { replace: true })
+        if (props.isAuth) {
+            return navigate('/', { replace: true })
         }
     })
     const onEmailChange = (e) => {
@@ -56,7 +56,7 @@ const Register = (props) => {
                 <div className='text-center text-danger mt-3'>
                     {props.isFetching ? <MDBSpinner color='primary'>
                         <span className='visually-hidden'>Loading...</span>
-                    </MDBSpinner> : props.errors}
+                    </MDBSpinner> : <span>{props.errors.map(e => (<p>{e}</p>))}</span>}
                 </div>
                 <div className='text-center mt-4'>
                     <p>

@@ -1,6 +1,16 @@
+import React from 'react';
 import { connect } from 'react-redux';
-import { updatePassword, updateEmail, registerThunk, updateConfirmPassword } from '../../../redux/auth-reducer';
+import { updatePassword, updateEmail, registerThunk, updateConfirmPassword, clearForm } from '../../../redux/auth-reducer';
 import Register from './Register'
+
+class RegisterContainer extends React.Component {
+    componentDidMount() {
+        this.props.clearForm();
+    }
+    render() {
+        return <Register {...this.props} />
+    }
+}
 
 const mapStateToProps = (state) => {
     return {
@@ -8,7 +18,7 @@ const mapStateToProps = (state) => {
         passText: state.authReducer.passText,
         confirmPassText: state.authReducer.confirmPassText,
         errors: state.authReducer.errors,
-        isRegistered: state.authReducer.isRegistered,
+        isAuth: state.authReducer.isAuth,
         isFetching: state.authReducer.isFetching,
     };
 }
@@ -19,10 +29,9 @@ const mapDispatchToProps = (dispatch) => {
         updateEmail: (email) => dispatch(updateEmail(email)),
         updatePassword: (password) => dispatch(updatePassword(password)),
         updateConfirmPassword: (confirmPassword) => dispatch(updateConfirmPassword(confirmPassword)),
+        clearForm: () => dispatch(clearForm()),
 
     };
 }
 
-const RegisterContainer = connect(mapStateToProps, mapDispatchToProps)(Register);
-
-export default RegisterContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterContainer);

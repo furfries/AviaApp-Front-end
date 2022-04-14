@@ -18,16 +18,15 @@ import {
 } from 'mdb-react-ui-kit';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-const Header = () => {
+const Header = (props) => {
     const [showBasic, setShowBasic] = useState(false);
     const navigate = useNavigate();
-    function logOut() {
-        sessionStorage.clear();
+    const onLogout = () => {
+        props.logout();
         navigate('/login', { replace: true });
-    };
-
+    }
     function redirect() {
-        if (sessionStorage.getItem('email') === 'admin@xx.xx') {
+        if (props.user.roles.includes('admin')) {
             return navigate('/adminpage', { replace: true })
         } else {
             return navigate('/userpage', { replace: true })
@@ -36,14 +35,14 @@ const Header = () => {
     return (
         <MDBNavbar expand='lg' light bgColor='light'>
             <MDBContainer fluid>
-                <NavLink to={'/main'}> <MDBNavbarBrand>
-                    <img
+            <NavLink to={'/'}> <div className='pe-4'>
+                    <img  
                         src='./logo-transparent4.png'
-                        height='30'
+                        height='35'
                         alt=''
                         loading='lazy'
                     />
-                </MDBNavbarBrand> </NavLink>
+                </div> </NavLink>
                 <MDBNavbarToggler
                     aria-controls='navbarSupportedContent'
                     aria-expanded='false'
@@ -84,20 +83,20 @@ const Header = () => {
                         <MDBNavbarItem>
                         </MDBNavbarItem>
                     </MDBNavbarNav>
-                    {sessionStorage.getItem('avia-app-user') ? (
+                    {props.isAuth ? (
                         <MDBDropdown>
-                            <MDBDropdownToggle>{sessionStorage.getItem('email')}</MDBDropdownToggle>
+                            <MDBDropdownToggle>{props.user.email}</MDBDropdownToggle>
                             <MDBDropdownMenu>
                                 <MDBDropdownItem>
                                     <MDBDropdownLink onClick={redirect}>Account</MDBDropdownLink>
                                 </MDBDropdownItem>
                                 <MDBDropdownItem>
-                                    <MDBDropdownLink onClick={logOut} >Logout</MDBDropdownLink>
+                                    <MDBDropdownLink onClick={onLogout} >Logout</MDBDropdownLink>
                                 </MDBDropdownItem>
                             </MDBDropdownMenu>
                         </MDBDropdown>) : (
                         <NavLink to='/login'><MDBBtn >LOGIN</MDBBtn></NavLink>)
-                    }     
+                    }
                 </MDBCollapse>
             </MDBContainer>
         </MDBNavbar>

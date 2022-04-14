@@ -1,13 +1,7 @@
 import React from 'react';
-import { Navigate } from "react-router-dom";
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 
-const AdminPage = () => {
-    if (sessionStorage.getItem('email') !==  'admin@xx.xx') {
-        return <Navigate to={'/login'} replace={true} />
-    } else {
-
-    }
+const AdminPage = (props) => {
     return (
         <MDBRow className='mt-3'>
             <MDBCol sm='12'>
