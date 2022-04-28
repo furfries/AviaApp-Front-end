@@ -85,7 +85,7 @@ const authReducer = (state = initialState, action) => {
             }
         }
         case LOGOUT: {
-            sessionStorage.clear();
+            localStorage.clear();
             return {
                 ...state,
                 user: {},
@@ -102,13 +102,13 @@ const authReducer = (state = initialState, action) => {
             }
         }
         case IS_AUTH_CHECK: {
-            if (sessionStorage.getItem('avia-app-user')) {
+            if (localStorage.getItem('avia-app-user')) {
                 return {
                     ...state,
                     isAuth: true,
                     user: {
-                        email: JSON.parse(sessionStorage.getItem('avia-app-user')).email,
-                        roles: JSON.parse(sessionStorage.getItem('avia-app-user')).roles
+                        email: JSON.parse(localStorage.getItem('avia-app-user')).email,
+                        roles: JSON.parse(localStorage.getItem('avia-app-user')).roles
                     }
                 }
             }
@@ -136,7 +136,7 @@ export const loginThunk = (email, password) => (dispatch) => {
             case 200: {
                 let roles = response.data.roles
                 let user = { token: response.data.token, email: email, roles: roles }
-                sessionStorage.setItem('avia-app-user', JSON.stringify(user));
+                localStorage.setItem('avia-app-user', JSON.stringify(user));
                 dispatch(login(email, roles));
                 dispatch(isFetching(false))
                 break;
