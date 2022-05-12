@@ -1,117 +1,95 @@
 import React, { useState } from 'react';
 import {
-    MDBBtn, MDBTable, MDBTableBody, MDBInput,
-    MDBModal, MDBCard, MDBCardBody, MDBCardTitle, MDBSpinner, MDBContainer
+    MDBTabs, MDBTabsItem, MDBTabsLink, MDBTabsContent, MDBTabsPane, MDBRow, MDBCol,
+    MDBContainer, MDBCard, MDBCardBody, MDBCardTitle, MDBBtn, MDBTable, MDBTableBody,
+    MDBModal, MDBSpinner, MDBIcon
 } from 'mdb-react-ui-kit';
-import AddCountryButton from './AddCountryButton/AddCountryButton';
-import UpdateCountryButton from './UpdateCountryButton/UpdateCountryButton';
-import CitiesModal from './Cities/CitiesModal';
-import SearchCountryModal from './SearchCountryModal/SearchCountryModal';
 
 const AdminPage = (props) => {
-    const [optSmModal, setOptSmModal] = useState(false);
-    const toggleShow = (countryId) => {
-        setOptSmModal(!optSmModal);
-        props.getCitiesThunk(countryId);
-    }
-    const toggleClose = () => setOptSmModal(!optSmModal);
-    const [addCountryModal, setAddCountryModal] = useState(false);
-    const toggleAddShow = () => {
-        setAddCountryModal(!addCountryModal);
-        props.clearInput();
-    }
-    const [updateCountryModal, setUpdateCountryModal] = useState(false);
-    const toggleUpdateShow = () => {
-        setUpdateCountryModal(!updateCountryModal);
-        props.clearInput();
-    }
-    const [searchCountryModal, setSearchCountryModal] = useState(false);
-    const toggleSearchShow = () => {
-        setSearchCountryModal(!searchCountryModal);
-        props.searchCountryThunk(props.countryIdText);
-        props.clearInput();
-    }
-    const toggleSearchClose = () => setSearchCountryModal(!searchCountryModal);
-    const onDeleteCountry = (countryId) => {
-        props.deleteCountryThunk(countryId)
-    }
-    const onCountryNameChange = (e) => {
-        props.updateCountryName(e.target.value)
-    }
-    const onCountryIdChange = (e) => {
-        props.updateCountryId(e.target.value)
-    }
-    const addCountry = () => {
-        props.addCountryThunk(props.countryNameText);
-        props.clearInput();
-        setAddCountryModal(!addCountryModal);
-    }
-    const updateCountry = () => {
-        props.updateCountryThunk(props.countryIdText, props.countryNameText);
-        props.clearInput();
-        setUpdateCountryModal(!updateCountryModal);
-    }
-    let addCountryButton = <AddCountryButton toggleAddShow={toggleAddShow} onCountryNameChange={onCountryNameChange}
-        countryNameText={props.countryNameText} addCountry={addCountry} />
-    let updateCountryButton = <UpdateCountryButton onCountryNameChange={onCountryNameChange}
-        onCountryIdChange={onCountryIdChange} countryIdText={props.countryIdText}
-        countryNameText={props.countryNameText} toggleUpdateShow={toggleUpdateShow} updateCountry={updateCountry} />
-    let searchCountryButton = <SearchCountryModal {...props} toggleSearchShow={toggleSearchShow}
-        toggleSearchClose={toggleSearchClose} onDeleteCountry={onDeleteCountry} />
-    let citiesModal = <CitiesModal {...props} toggleClose={toggleClose} />
-    let countriesRow = [];
-
-    if (props.countries) {
-        for (let i = 0; i < props.countries.length; i++) {
-            let id = [];
-            id.push(props.countries[i].id)
-            countriesRow.push(<tr key={id}><td><h6 className="fw-bold">{props.countries[i].name}</h6>
-                <p className="fst-italic">{id}</p></td><td><MDBBtn size='sm' outline
-                    onClick={() => toggleShow(id)}>Cities</MDBBtn></td><td><MDBBtn outline size='sm' color='danger'
-                        onClick={() => onDeleteCountry(id)}>Delete</MDBBtn></td></tr>)
+    const [verticalActive, setVerticalActive] = useState('tab1');
+    const handleVerticalClick = (value = string) => {
+        if (value === verticalActive) {
+            return;
         }
-    }
+        setVerticalActive(value);
+    };
     return (
+        <>
         <MDBContainer fluid className='d-block'>
-            <MDBCard className='mt-4'>
+            <MDBCard className='mt-2'>
                 <MDBCardBody>
-                    <MDBCardTitle className='text-center'> <p className='fs-2'>LOCATION MANAGEMENT</p></MDBCardTitle>
-                    {props.isFetching ? <div className='text-center'><MDBSpinner color='primary'>
-                        <span className='visually-hidden'>Loading...</span>
-                    </MDBSpinner></div> : <MDBContainer breakpoint="sm">
-                        <MDBTable hover className='caption-top'>
-                            <caption className='d-flex justify-content-around'>
-                                <MDBBtn outline color='success' size='sm' onClick={toggleAddShow}>ADD NEW COUNTRY</MDBBtn>
-                                <MDBBtn outline color='warning' size='sm' onClick={toggleUpdateShow}>UPDATE COUNTRY NAME</MDBBtn>
-                                <div className='d-flex '>
-                                    <MDBInput label='Enter country ID' type='text' className='me-3' onChange={onCountryIdChange}
-                                        value={props.countryIdText} />
-                                    {props.countryIdText ? <MDBBtn outline color='secondary' size='sm' className='ps-3'
-                                        onClick={toggleSearchShow}>SEARCH COUNTRY BY ID</MDBBtn> :
-                                        <MDBBtn outline color='secondary' size='sm' className='ps-3' disabled>SEARCH COUNTRY BY ID</MDBBtn>}
-                                </div>
-                                <MDBModal show={addCountryModal} setShow={setAddCountryModal} tabIndex='-1'>
-                                    {addCountryButton}
-                                </MDBModal>
-                                <MDBModal show={updateCountryModal} setShow={setUpdateCountryModal} tabIndex='-1'>
-                                    {updateCountryButton}
-                                </MDBModal>
-                                <MDBModal show={searchCountryModal} setShow={setSearchCountryModal} tabIndex='-1'>
-                                    {searchCountryButton}
-                                </MDBModal>
-                            </caption>
-                            <MDBTableBody>
-                                {countriesRow}
-                                <MDBModal show={optSmModal} tabIndex='-1' setShow={setOptSmModal}>
-                                    {citiesModal}
-                                </MDBModal>
-                            </MDBTableBody>
-                        </MDBTable>
-                    </MDBContainer>}
+                    <MDBCardTitle className='text-center text-danger'>
+                        <MDBIcon className='me-2' fas icon="user-alt" /> 
+                        ADMIN DASHBOARD
+                    </MDBCardTitle>
+                </MDBCardBody>
+            </MDBCard>
+            <MDBCard className='mt-2'>
+                <MDBCardBody>
+                    <MDBRow>
+                        <MDBCol size='3'>
+                            <MDBTabs pills className='flex-column text-center'>
+                                <MDBTabsItem>
+                                    <MDBTabsLink onClick={() => handleVerticalClick('tab1')} 
+                                        active={verticalActive === 'tab1'}>
+                                            Location Management
+                                        <MDBIcon fas icon="map-marker-alt" className='ms-1' />
+                                    </MDBTabsLink>
+                                </MDBTabsItem>
+                                <MDBTabsItem>
+                                    <MDBTabsLink onClick={() => handleVerticalClick('tab2')} 
+                                        active={verticalActive === 'tab2'}>
+                                            Users List
+                                        <MDBIcon fas icon="users" className='ms-1' />
+                                    </MDBTabsLink>
+                                </MDBTabsItem>
+                                <MDBTabsItem>
+                                    <MDBTabsLink onClick={() => handleVerticalClick('tab3')} 
+                                        active={verticalActive === 'tab3'}>
+                                            Blacklist
+                                        <MDBIcon fas icon="ban" className='ms-1' />
+                                    </MDBTabsLink>
+                                </MDBTabsItem>
+                            </MDBTabs>
+                        </MDBCol>
+                        <MDBCol size='9'>
+                            <MDBTabsContent>
+                                <MDBTabsPane show={verticalActive === 'tab1'}>
+                                    {props.isFetching ? <div className='text-center'><MDBSpinner color='primary'>
+                                        <span className='visually-hidden'>Loading...</span>
+                                    </MDBSpinner></div> : <MDBContainer breakpoint="sm">
+                                        <MDBTable hover className='caption-top'>
+                                            <caption className='d-flex justify-content-around'>
+                                                <MDBBtn outline color='success' size='sm' 
+                                                    onClick={props.toggleAddShow}>ADD NEW COUNTRY</MDBBtn>
+                                                <MDBModal show={props.addCountryModal} 
+                                                    setShow={props.setAddCountryModal} tabIndex='-1'>
+                                                        {props.addCountryButton}
+                                                </MDBModal>
+                                                <MDBModal show={props.updateCountryModal} 
+                                                    setShow={props.setUpdateCountryModal} tabIndex='-1'>
+                                                        {props.updateCountryButton}
+                                                </MDBModal>
+                                            </caption>
+                                            <MDBTableBody>
+                                                {props.countriesRow}
+                                                <MDBModal show={props.optSmModal} tabIndex='-1' 
+                                                    setShow={props.setOptSmModal}>
+                                                        {props.citiesModal}
+                                                </MDBModal>
+                                            </MDBTableBody>
+                                        </MDBTable>
+                                    </MDBContainer>}
+                                </MDBTabsPane>
+                                <MDBTabsPane show={verticalActive === 'tab2'}>Users List</MDBTabsPane>
+                                <MDBTabsPane show={verticalActive === 'tab3'}>Blacklist</MDBTabsPane>
+                            </MDBTabsContent>
+                        </MDBCol>
+                    </MDBRow>
                 </MDBCardBody>
             </MDBCard>
         </MDBContainer>
-    );
-};
+    </>
+)}
 
 export default AdminPage;

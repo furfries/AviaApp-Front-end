@@ -19,8 +19,6 @@ const UpdateAirportButton = (props) => {
                      <MDBBtn className='btn-close' color='none' onClick={props.toggleUpdateShow}></MDBBtn>
                    </MDBModalHeader>
                    <MDBModalBody>
-                   <MDBInput label='Airport ID' type='text' className='mb-3' onChange={props.onAirportIdChange}
-                             value={props.airportIdText} /> 
                    <MDBInput label='New airport name' type='text' onChange={props.onAirportNameChange}
                              value={props.airportNameText} /> 
                    </MDBModalBody>
@@ -29,13 +27,9 @@ const UpdateAirportButton = (props) => {
                      <MDBBtn outline color='secondary' size='sm' onClick={props.toggleUpdateShow}>
                        Close
                      </MDBBtn>
-                     {(() => {
-                            if ( props.airportNameText && props.airportIdText ){
-                                return <MDBBtn outline color='warning' size='sm' onClick={props.updateAirport}>Update</MDBBtn>
-                            }
-                            else return <MDBBtn outline color='warning' size='sm' disabled>Update</MDBBtn>
-                            }
-                        )()}
+                     {props.airportNameText ? <MDBBtn outline color='warning' size='sm' 
+                        onClick={props.updateAirport}>Update</MDBBtn> : <MDBBtn outline color='warning'
+                        size='sm' disabled>Update</MDBBtn>}
                    </MDBModalFooter>
                  </MDBModalContent>
                </MDBModalDialog>

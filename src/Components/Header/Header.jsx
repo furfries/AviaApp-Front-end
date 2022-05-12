@@ -87,7 +87,9 @@ const Header = (props) => {
                             <MDBDropdownToggle>{props.user.email}</MDBDropdownToggle>
                             <MDBDropdownMenu>
                                 <MDBDropdownItem>
-                                    <MDBDropdownLink onClick={redirect}>Account</MDBDropdownLink>
+                                    {props.user.roles.includes('admin') ? <MDBDropdownLink onClick={redirect} 
+                                    className='text-danger'>Admin dashboard</MDBDropdownLink> :
+                                    <MDBDropdownLink onClick={redirect}>Account</MDBDropdownLink>}
                                 </MDBDropdownItem>
                                 <MDBDropdownItem>
                                     <MDBDropdownLink onClick={onLogout} >Logout</MDBDropdownLink>

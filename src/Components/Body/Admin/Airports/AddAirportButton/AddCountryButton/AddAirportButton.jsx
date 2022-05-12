@@ -24,7 +24,7 @@ const AddAirportButton = (props) => {
                 <MDBModalFooter>
                     <MDBBtn outline color='secondary' size='sm' onClick={props.toggleAddShow}>Close</MDBBtn>
                     {props.airportNameText ? <MDBBtn outline color='success' size='sm' onClick={props.addAirport}>
-                    Add airport</MDBBtn> : <MDBBtn outline color='success' size='sm' disabled>Add city</MDBBtn>}
+                    Add airport</MDBBtn> : <MDBBtn outline color='success' size='sm' disabled>Add airport</MDBBtn>}
                 </MDBModalFooter>
             </MDBModalContent>
         </MDBModalDialog>

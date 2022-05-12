@@ -10,6 +10,8 @@ const UPDATE_CITY_NAME = 'UPDATE_CITY_NAME';
 const UPDATE_CITY_ID = 'UPDATE_CITY_ID';
 const SET_COUNTRY_ID = 'SET_COUNTRY_ID';
 const IS_FETCHING = 'IS_FETCHING';
+const IS_CITIES_FETCHING = 'IS_CITIES_FETCHING';
+const IS_AIRPORTS_FETCHING = 'IS_AIRPORTS_FETCHING'
 const GET_FOUND_COUNTRY = 'GET_FOUND_COUNTRY';
 const GET_FOUND_CITY = 'GET_FOUND_CITY';
 const GET_AIRPORTS = 'GET_AIRPORTS';
@@ -17,7 +19,6 @@ const UPDATE_AIRPORT_NAME = 'UPDATE_AIRPORT_NAME';
 const UPDATE_AIRPORT_ID = 'UPDATE_AIRPORT_ID';
 const SET_CITY_ID = 'SET_CITY_ID';
 const GET_FOUND_AIRPORT = 'GET_FOUND_AIRPORT';
-
 
 let initialState = {
     countries : [],
@@ -29,20 +30,16 @@ let initialState = {
     errors : [],
     countryName: '',
     countryNameText: '',
-    countryIdText: '',
-    countryId: '',
     cityName:'',
     cityNameText: '',
-    cityId:'',
-    cityIdText: '',
     airportName: '',
     airportNameText: '',
-    airportId: '',
-    airportIdText: '',
     currentCountryId: '',
     currentCityId: '',
     currentAirportId: '',
     isFetching: false,
+    isCitiesFetching: false,
+    isAirportsFetching: false,
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -72,12 +69,6 @@ const adminReducer = (state = initialState, action) => {
 
             }
         }
-        case UPDATE_COUNTRY_ID : {
-            return {
-                ...state,
-                countryIdText: action.countryId
-            }
-        }
         case CLEAR_INPUT : {
             return {
                 ...state,
@@ -95,12 +86,6 @@ const adminReducer = (state = initialState, action) => {
                 cityNameText: action.cityName
             }
         }
-        case UPDATE_CITY_ID : {
-            return {
-                ...state,
-                cityIdText: action.cityId
-            }
-        }
         case SET_COUNTRY_ID : {
             return {
                 ...state,
@@ -111,6 +96,18 @@ const adminReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: action.isFetching
+            }
+        }
+        case IS_CITIES_FETCHING: {
+            return {
+                ...state,
+                isCitiesFetching: action.isCitiesFetching
+            }
+        }
+        case IS_AIRPORTS_FETCHING: {
+            return {
+                ...state,
+                isAirportsFetching: action.isAirportsFetching
             }
         }
         case GET_FOUND_COUNTRY: {
@@ -149,24 +146,15 @@ const adminReducer = (state = initialState, action) => {
                 airport: action.airport
             }
         }
-        case UPDATE_AIRPORT_ID: {
-            return {
-                ...state,
-                airportIdText: action.airportId,
-            }
-        }
         default : return state
     }
-
 }
 
 export const getCountries = (countries) => ({type: GET_COUNTRIES, countries});
 export const failed = (errors) => ({type: FAILED, errors});
 export const getCities = (cities) => ({type: GET_CITIES, cities});
 export const updateCountryName = (countryName) => ({type: UPDATE_COUNTRY_NAME, countryName});
-export const updateCountryId = (countryId) => ({type: UPDATE_COUNTRY_ID, countryId})
 export const updateCityName = (cityName) => ({type: UPDATE_CITY_NAME, cityName});
-export const updateCityId = (cityId) => ({type: UPDATE_CITY_ID, cityId});
 export const clearInput = () => ({type: CLEAR_INPUT});
 export const setCountryId = (currentCountryId) => ({type: SET_COUNTRY_ID, currentCountryId});
 export const isFetching = (isFetching) => ({ type: IS_FETCHING, isFetching });
@@ -174,11 +162,16 @@ export const getFoundCountry = (country) => ({type: GET_FOUND_COUNTRY, country})
 export const getFoundCity = (city) => ({type: GET_FOUND_CITY, city});
 export const getAirports = (airports) => ({type: GET_AIRPORTS, airports});
 export const updateAirportName = (airportName) => ({type: UPDATE_AIRPORT_NAME, airportName});
-export const updateAirportId = (airportId) => ({type: UPDATE_AIRPORT_ID, airportId});
 export const setCityId = (currentCityId) => ({type: SET_CITY_ID, currentCityId});
-export const getFoundAirport = (airport) => ({type: GET_FOUND_AIRPORT, airport})
+export const getFoundAirport = (airport) => ({type: GET_FOUND_AIRPORT, airport});
+export const isCitiesFetching = (isCitiesFetching) => ({type: IS_CITIES_FETCHING, isCitiesFetching});
+export const isAirportsFetching = (isAirportsFetching) => ({type: IS_AIRPORTS_FETCHING, isAirportsFetching});
 
-
+function Error (dispatch) {
+    let errors = ['Error']
+    dispatch(failed(errors))
+    console.log(errors.toString())
+}
 
 export const getCountriesThunk = () => (dispatch) => {
     dispatch(isFetching(true))
@@ -193,8 +186,7 @@ export const getCountriesThunk = () => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 dispatch(isFetching(false))
                 break;
             }
@@ -212,8 +204,7 @@ export const addCountryThunk = (countryName) => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
         }
@@ -230,8 +221,7 @@ export const deleteCountryThunk = (countryId) => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
     }})
@@ -247,8 +237,7 @@ export const updateCountryThunk = (id, name) => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
     }})
@@ -263,17 +252,17 @@ export const searchCountryThunk = (countryId) => (dispatch) => {
                 dispatch(getFoundCountry(country))
             }
             case 400:
-                case 401:
-                case 404: {
-                    let errors = ['Error']
-                    dispatch(failed(errors))
-                    break;
+            case 401:
+            case 404: {
+                Error(dispatch)
+                break;
             }
         }
     })
 }
 
 export const getCitiesThunk = (countryId) => (dispatch) => {
+    dispatch(isCitiesFetching(true))
     locationAPI.getCities(countryId).then(response => {
         switch (response.status){
             case 200: {
@@ -281,13 +270,14 @@ export const getCitiesThunk = (countryId) => (dispatch) => {
                 let currentCountryId = countryId.toString()
                 dispatch(getCities(cities));
                 dispatch(setCountryId(currentCountryId));
+                dispatch(isCitiesFetching(false))
                 break;
             }
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
+                dispatch(isCitiesFetching(false))
                 break;
             }
         }
@@ -304,8 +294,7 @@ export const addCityThunk = (countryId, cityName) => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
     }})
@@ -320,8 +309,7 @@ export const deleteCityThunk = (cityId, countryId) => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
         }
@@ -337,8 +325,7 @@ export const updateCityThunk = (cityId, updatedCityName, countryId) => (dispatch
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
         }
@@ -355,28 +342,29 @@ export const searchCityThunk = (cityId) => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
         }
     })
 }
 export const getAirportsThunk = (cityId) => (dispatch) => {
+    dispatch(isAirportsFetching(true))
     locationAPI.getAirports(cityId).then(response => {
         switch (response.status) {
             case 200: {
                 let airports = response.data;
                 let currentCityId = cityId.toString()
                 dispatch(getAirports(airports));
-                dispatch(setCityId(currentCityId)) ;
+                dispatch(setCityId(currentCityId));
+                dispatch(isAirportsFetching(false))
                 break;
             }
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
+                dispatch(isAirportsFetching(false))
                 break;
             }
         }
@@ -392,8 +380,7 @@ export const addAirportThunk = (cityId, airportName) => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
         }
@@ -409,8 +396,7 @@ export const deleteAirportThunk = (airportId, cityId) => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
         }
@@ -426,8 +412,7 @@ export const searchAirportThunk = (airportId) => (dispatch) => {
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
         }
@@ -442,8 +427,7 @@ export const updateAirportThunk = (airportId, updatedAirportName, cityId) => (di
             case 400:
             case 401:
             case 404: {
-                let errors = ['Error']
-                dispatch(failed(errors))
+                Error(dispatch)
                 break;
             }
         }
