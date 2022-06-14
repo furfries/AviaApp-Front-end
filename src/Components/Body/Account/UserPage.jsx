@@ -7,7 +7,7 @@ const UserPage = (props) => {
             <MDBCol sm='12'>
                 <MDBCard>
                     <MDBCardBody>
-                        <MDBCardTitle className='text-center'> <MDBIcon className='me-2' fas icon="user-alt" /> {props.user.email.toUpperCase()} </MDBCardTitle>
+                        <MDBCardTitle className='text-center'> <MDBIcon className='me-2' fas icon="user-alt" /> {props.email.toUpperCase()} </MDBCardTitle>
                     </MDBCardBody>
                 </MDBCard>
             </MDBCol>

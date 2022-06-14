@@ -27,6 +27,15 @@ export const authAPI = {
             return error.response
         })
     },
+    getRoles(){
+        return instance.get(`User/roles`)
+        .then(response => {
+            return response
+        })
+        .catch(error => {
+            return error.response
+        })
+    }
 }
 
 export const locationAPI = {
@@ -75,15 +84,6 @@ export const locationAPI = {
             return error.response
         })
     },
-    searchCity(cityId) {
-        return instance.get(`City/${cityId}`)
-        .then (response => {
-            return response
-        })
-        .catch(error => {
-            return error.response
-        })
-    },
     addCountry(countryName){
         return instance.post(`Country?countryName=${countryName}`)
         .then (response => {
@@ -111,15 +111,6 @@ export const locationAPI = {
             return error.response
         })
     },
-    searchCountry(countryId){
-        return instance.get(`Country/${countryId}`)
-        .then (response => {
-            return response
-        })
-        .catch(error => {
-            return error.response
-        })
-    },
     getAirports(cityId){
         return instance.get(`Airport/list/${cityId}`)
         .then (response => {
@@ -140,15 +131,6 @@ export const locationAPI = {
     },
     deleteAirport(airportId){
         return instance.delete(`Airport/${airportId}`)
-        .then (response => {
-            return response
-        })
-        .catch(error => {
-            return error.response
-        })
-    },
-    searchAirport(airportId) {
-        return instance.get(`Airport/${airportId}`)
         .then (response => {
             return response
         })
