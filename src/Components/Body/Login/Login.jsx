@@ -31,6 +31,7 @@ const Login = (props) => {
                     id='form1Example1' label='Email address'
                     onChange={onEmailChange}
                     value={props.emailText}
+                    autoFocus
                 />
                 <MDBInput className='mb-4 d-flex justify-content-center'
                     type='password'

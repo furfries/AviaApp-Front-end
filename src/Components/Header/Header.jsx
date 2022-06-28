@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
     MDBContainer,
     MDBNavbar,
-    MDBNavbarBrand,
     MDBNavbarToggler,
     MDBIcon,
     MDBNavbarNav,
@@ -25,11 +24,20 @@ const Header = (props) => {
         props.logout();
         navigate('/login', { replace: true });
     }
-    function redirect() {
-        if (props.user.roles.includes('admin')) {
-            return navigate('/adminpage', { replace: true })
-        } else {
+    function redirectToAdmin() {
+        return navigate('/adminpage', { replace: true })
+    }
+
+    function redirectToUser() {
             return navigate('/userpage', { replace: true })
+    }
+
+    function itemDrop () {
+        if(props.roles) {
+            if(props.roles.includes('admin')) {
+                return <MDBDropdownLink onClick={redirectToAdmin} className='text-danger'>Admin dashboard</MDBDropdownLink>
+            }
+            else return null
         }
     }
     return (
@@ -85,10 +93,13 @@ const Header = (props) => {
                     </MDBNavbarNav>
                     {props.isAuth ? (
                         <MDBDropdown>
-                            <MDBDropdownToggle>{props.user.email}</MDBDropdownToggle>
+                            <MDBDropdownToggle>{props.email}</MDBDropdownToggle>
                             <MDBDropdownMenu>
                                 <MDBDropdownItem>
-                                    <MDBDropdownLink onClick={redirect}>Account</MDBDropdownLink>
+                                {itemDrop()}
+                                </MDBDropdownItem>
+                                <MDBDropdownItem>
+                                <MDBDropdownLink onClick={redirectToUser}>Account</MDBDropdownLink>
                                 </MDBDropdownItem>
                                 <MDBDropdownItem>
                                     <MDBDropdownLink onClick={onLogout} >Logout</MDBDropdownLink>

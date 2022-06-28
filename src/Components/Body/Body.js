@@ -7,7 +7,7 @@ import MainPage from './MainPage/MainPage';
 import RegisterContainer from './Register/RegisterContainer';
 
 
-const Body = (props) => {
+const Body = () => {
     return (
         <Routes>
             <Route path='/login' element={<LoginContainer />} />
@@ -16,7 +16,6 @@ const Body = (props) => {
             <Route path='/userpage' element={<UserpageContainer />} />
             <Route path='/' element={<MainPage />} />
         </Routes>
-
     );
 };
 

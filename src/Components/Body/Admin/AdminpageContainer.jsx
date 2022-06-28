@@ -1,29 +1,32 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { isAuthCheck } from '../../../redux/auth-reducer';
-import { Navigate } from "react-router-dom";
 import AdminPage from './AdminPage';
+import {getCountriesThunk} from '../../../redux/admin-reducer';
 
-class AdminpageContainer extends React.Component {
-    componentDidMount() {
-        this.props.isAuthCheck()
-    }
-    render() {
-        if (!this.props.isAuth || !this.props.user.roles.includes('admin')) return <Navigate to={'/login'} replace={true} />
-        return <AdminPage {...this.props} />
-    }
+
+const AdminpageContainer = (props) => {
+    useEffect(() => {
+        props.getCountriesThunk();
+      }, []);
+
+    return (
+        <AdminPage {...props} />
+    )
 }
 
 const mapStateToProps = (state) => {
     return {
         isAuth: state.authReducer.isAuth,
         user: state.authReducer.user,
+        isFetching: state.adminReducer.isFetching,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        isAuthCheck: () => dispatch(isAuthCheck())
+        isAuthCheck: () => dispatch(isAuthCheck()),
+        getCountriesThunk: () => dispatch(getCountriesThunk()),
     }
 }
 

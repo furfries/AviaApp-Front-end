@@ -17,7 +17,7 @@ class UserpageContainer extends React.Component {
 const mapStateToProps = (state) => {
     return {
         isAuth: state.authReducer.isAuth,
-        user: state.authReducer.user,
+        email: state.authReducer.email,
     }
 }
 

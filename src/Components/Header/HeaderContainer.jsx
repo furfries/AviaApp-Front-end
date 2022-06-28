@@ -1,29 +1,41 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
-import { isAuthCheck, logout } from '../../redux/auth-reducer';
+import { getRolesThunk, isAuthCheck, logout} from '../../redux/auth-reducer';
 import Header from './Header';
+import    { MDBDropdownItem,
+MDBDropdownLink,
+} from 'mdb-react-ui-kit';
 
-class HeaderContainer extends React.Component {
-    componentDidMount() {
-        this.props.isAuthCheck()
-    }
+const HeaderContainer = (props) => {
+    useEffect(() => {
+        props.isAuthCheck();
+        if(props.isAuth) {
+            props.getRolesThunk();
+          }
+      }, [props.isAuth]);
+    
+ //     let dropDown =  <MDBDropdownItem>{props.roles.includes('admin') && <MDBDropdownLink className='text-danger'>Admin dashboard</MDBDropdownLink>}</MDBDropdownItem>
+          
 
-    render() {
-        return <Header {...this.props} />
-    }
+    return( 
+        <Header {...props}/>
+    )
 }
 
 const mapStateToProps = (state) => {
     return {
         isAuth: state.authReducer.isAuth,
-        user: state.authReducer.user,
+        email: state.authReducer.email,
+        roles: state.authReducer.roles,
+        user: state.authReducer.user
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         logout: () => dispatch(logout()),
-        isAuthCheck: () => dispatch(isAuthCheck())
+        isAuthCheck: () => dispatch(isAuthCheck()),
+        getRolesThunk: () => dispatch(getRolesThunk())
     }
 }
 

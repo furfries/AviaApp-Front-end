@@ -1,41 +1,80 @@
-import React from 'react';
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
+import React, { useState } from 'react';
+import {
+    MDBTabs, MDBTabsItem, MDBTabsLink, MDBTabsContent, MDBTabsPane, MDBRow, MDBCol,
+    MDBContainer, MDBCard, MDBCardBody, MDBCardTitle, MDBSpinner, MDBIcon
+} from 'mdb-react-ui-kit';
+import CountriesContainer from './Countries/CountriesContainer';
 
 const AdminPage = (props) => {
+    const [verticalActive, setVerticalActive] = useState('tab1');
+
+    const handleVerticalClick = (value = string) => {
+        if (value === verticalActive) {
+            return;
+        }
+        setVerticalActive(value);
+    };
+
+    let countriesTable = <CountriesContainer {...props} />
+
     return (
-        <MDBRow className='mt-3'>
-            <MDBCol sm='12'>
-                <MDBCard>
+        <>
+            <MDBContainer fluid className='d-block'>
+                <MDBCard className='mt-2'>
                     <MDBCardBody>
                         <MDBCardTitle className='text-center text-danger'>
-                            <MDBIcon className='me-2' fas icon="user-alt" /> ADMIN </MDBCardTitle>
+                            <MDBIcon className='me-2' fas icon="user-alt" />
+                            ADMIN DASHBOARD
+                        </MDBCardTitle>
                     </MDBCardBody>
                 </MDBCard>
-            </MDBCol>
-            <MDBCol sm='6' className='mt-3'>
-                <MDBCard>
+                <MDBCard className='mt-2'>
                     <MDBCardBody>
-                        <MDBCardTitle className='text-center'>
-                            <MDBIcon className='me-2' fas icon="users" /> USERS </MDBCardTitle>
-                        <MDBCardText className='text-center'>
-                            Users list
-                        </MDBCardText>
+                        <MDBRow>
+                            <MDBCol size='3'>
+                                <MDBTabs pills className='flex-column text-center'>
+                                    <MDBTabsItem>
+                                        <MDBTabsLink onClick={() => handleVerticalClick('tab1')}
+                                            active={verticalActive === 'tab1'}>
+                                            Location Management
+                                            <MDBIcon fas icon="map-marker-alt" className='ms-1' />
+                                        </MDBTabsLink>
+                                    </MDBTabsItem>
+                                    <MDBTabsItem>
+                                        <MDBTabsLink onClick={() => handleVerticalClick('tab2')}
+                                            active={verticalActive === 'tab2'}>
+                                            Users List
+                                            <MDBIcon fas icon="users" className='ms-1' />
+                                        </MDBTabsLink>
+                                    </MDBTabsItem>
+                                    <MDBTabsItem>
+                                        <MDBTabsLink onClick={() => handleVerticalClick('tab3')}
+                                            active={verticalActive === 'tab3'}>
+                                            Blacklist
+                                            <MDBIcon fas icon="ban" className='ms-1' />
+                                        </MDBTabsLink>
+                                    </MDBTabsItem>
+                                </MDBTabs>
+                            </MDBCol>
+                            <MDBCol size='9'>
+                                <MDBTabsContent>
+                                    <MDBTabsPane show={verticalActive === 'tab1'}>
+                                        {props.isFetching ? <div className='text-center'><MDBSpinner color='primary'>
+                                            <span className='visually-hidden'>Loading...</span>
+                                        </MDBSpinner></div> : <MDBContainer breakpoint="sm">
+                                            {countriesTable}
+                                        </MDBContainer>}
+                                    </MDBTabsPane>
+                                    <MDBTabsPane show={verticalActive === 'tab2'}>Users List</MDBTabsPane>
+                                    <MDBTabsPane show={verticalActive === 'tab3'}>Blacklist</MDBTabsPane>
+                                </MDBTabsContent>
+                            </MDBCol>
+                        </MDBRow>
                     </MDBCardBody>
                 </MDBCard>
-            </MDBCol>
-            <MDBCol sm='6' className='mt-3'>
-                <MDBCard>
-                    <MDBCardBody>
-                        <MDBCardTitle className='text-center'>
-                            <MDBIcon className='me-2' fas icon="ban" /> BLACKLIST</MDBCardTitle>
-                        <MDBCardText className='text-center'>
-                            Blocked users
-                        </MDBCardText>
-                    </MDBCardBody>
-                </MDBCard>
-            </MDBCol>
-        </MDBRow>
-    );
-};
+            </MDBContainer>
+        </>
+    )
+}
 
 export default AdminPage;

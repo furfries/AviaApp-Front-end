@@ -9,13 +9,15 @@ const UPDATE_CONFIRM_PASSWORD = 'UPDATE_CONFIRM_PASSWORD';
 const IS_FETCHING = 'IS_FETCHING';
 const LOGOUT = 'LOGOUT';
 const CLEAR_FORM = 'CLEAR_FROM';
-const IS_AUTH_CHECK = 'IS_AUTH_CHECK'
+const IS_AUTH_CHECK = 'IS_AUTH_CHECK';
+const SET_ROLES = 'SET_ROLES';
 
 let initialState = {
     emailText: '',
     passText: '',
     confirmPassText: '',
-    user: {},
+    email: '',
+    roles: null,
     errors: [],
     isAuth: false,
     isFetching: false,
@@ -27,10 +29,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAuth: true,
-                user: {
-                    email: action.email,
-                    roles: action.roles,
-                }
+                email: action.email
             }
         }
         case LOGIN_FAILED: {
@@ -85,10 +84,11 @@ const authReducer = (state = initialState, action) => {
             }
         }
         case LOGOUT: {
-            sessionStorage.clear();
+            localStorage.clear();
             return {
                 ...state,
-                user: {},
+                email: '',
+                roles: null,
                 isAuth: false,
             }
         }
@@ -102,15 +102,19 @@ const authReducer = (state = initialState, action) => {
             }
         }
         case IS_AUTH_CHECK: {
-            if (sessionStorage.getItem('avia-app-user')) {
+            if (localStorage.getItem('avia-app-user')) {
                 return {
                     ...state,
                     isAuth: true,
-                    user: {
-                        email: JSON.parse(sessionStorage.getItem('avia-app-user')).email,
-                        roles: JSON.parse(sessionStorage.getItem('avia-app-user')).roles
-                    }
+                    email: JSON.parse(localStorage.getItem('avia-app-user')).email,
+
                 }
+            }
+        }
+        case SET_ROLES: {
+            return {
+                ...state,
+                roles: action.roles
             }
         }
         default:
@@ -118,7 +122,7 @@ const authReducer = (state = initialState, action) => {
     }
 }
 
-export const login = (email, roles) => ({ type: LOGIN, email, roles });
+export const login = (email) => ({ type: LOGIN, email});
 export const loginFailed = (errors) => ({ type: LOGIN_FAILED, errors });
 export const updateEmail = (email) => ({ type: UPDATE_LOGIN, email });
 export const updatePassword = (password) => ({ type: UPDATE_PASSWORD, password });
@@ -128,16 +132,35 @@ export const isFetching = (isFetching) => ({ type: IS_FETCHING, isFetching });
 export const logout = (logout) => ({ type: LOGOUT, logout });
 export const clearForm = (clear) => ({ type: CLEAR_FORM, clear });
 export const isAuthCheck = (isAuthCheck) => ({ type: IS_AUTH_CHECK, isAuthCheck });
+export const setRoles = (roles) => ({type: SET_ROLES, roles})
+
+export const getRolesThunk = () => (dispatch) => {
+    authAPI.getRoles().then(response => {
+        switch (response.status) {
+            case 200: {
+                let roles = response.data
+                dispatch(setRoles(roles))
+                break;
+            }
+            case 400:
+            case 401:
+            case 500: {
+                let errors = ['Server error']
+                console.log(errors)
+            }
+        }
+    })
+
+}
 
 export const loginThunk = (email, password) => (dispatch) => {
     dispatch(isFetching(true))
     authAPI.login(email, password).then(response => {
         switch (response.status) {
             case 200: {
-                let roles = response.data.roles
-                let user = { token: response.data.token, email: email, roles: roles }
-                sessionStorage.setItem('avia-app-user', JSON.stringify(user));
-                dispatch(login(email, roles));
+                let user = { token: response.data.token, email: email}
+                localStorage.setItem('avia-app-user', JSON.stringify(user));
+                dispatch(login(email));
                 dispatch(isFetching(false))
                 break;
             }
